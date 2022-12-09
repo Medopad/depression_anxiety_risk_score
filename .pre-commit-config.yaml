@@ -1,0 +1,28 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.0.1
+  hooks:
+  - id: check-added-large-files
+  - id: check-ast
+  - id: check-case-conflict
+  - id: check-docstring-first
+  - id: check-executables-have-shebangs
+  - id: check-json
+  - id: check-merge-conflict
+  - id: check-toml
+  - id: check-xml
+  - id: check-yaml
+  - id: detect-private-key
+  - id: end-of-file-fixer
+  - id: forbid-new-submodules
+  - id: mixed-line-ending
+    args: [--fix=no]
+  - id: name-tests-test
+    args: ['--django']
+  - id: no-commit-to-branch
+    args: [--branch, master, --branch, develop, --pattern, release/.*]
+- repo: https://github.com/syntaqx/git-hooks
+  rev: v0.0.17
+  hooks:
+  - id: forbid-binary
+    exclude: (^libraries) || (drawio.png$)
