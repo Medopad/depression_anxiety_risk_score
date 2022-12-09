@@ -2,7 +2,7 @@
 WITH inclusion_criteria AS
 (SELECT 
     eid, 
-FROM `hu-ai-sandbox-project.uk_biobank.EHR` 
+FROM `uk-biobank-data.EHR.combined_ehr`
 WHERE before_assessment = True
 and REGEXP_CONTAINS(code,'diag_C') 
 GROUP BY 1),
@@ -12,7 +12,7 @@ outcome AS
 (SELECT 
     ehr.eid,
     MAX(IF(REGEXP_CONTAINS(code, "diag_F32"), 1, 0)) outcome,
-FROM `hu-ai-sandbox-project.uk_biobank.EHR` AS ehr
+FROM `uk-biobank-data.EHR.combined_ehr` AS ehr
 WHERE before_assessment = False
 GROUP BY 1
 )
@@ -20,7 +20,7 @@ GROUP BY 1
 SELECT
     hf._eid,
     outcome.outcome
-FROM `hu-ai-sandbox-project.uk_biobank.assessment_centre` hf
+FROM `uk-biobank-data.assessment.assessment_centre` hf
 JOIN inclusion_criteria ic
     ON hf._eid = ic.eid
 JOIN outcome
