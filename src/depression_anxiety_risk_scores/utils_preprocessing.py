@@ -173,6 +173,10 @@ def one_hot_encoder_list(
     df_dummy = df_dummy.groupby("_eid_").agg(agg_function)
     return df_dummy
 
+def get_consistent_columns_with_UKBMapper(df):
+    df.columns = [col.split(".")[0] for col in df.columns]
+    df.columns = df.columns.str.replace("-", "_")
+    return df
 
 def process_multi_categorical_type_data(
     df: pd.DataFrame, field_id: str, prefix_str: str = ""
@@ -191,6 +195,7 @@ def process_multi_categorical_type_data(
     df_ = one_hot_encoder_list(df_, "sum", prefix_str)
     df = df.drop(columns=field_id)
     df = df.merge(df_, how="left", on="_eid_")
+    df = get_consistent_columns_with_UKBMapper(df)
     return df
 
 
@@ -208,6 +213,7 @@ def process_categorical_type_data(
        pd.DataFrame: dataframe with processed categorical fields.
     """
     df = pd.get_dummies(df, columns=[field_id], prefix=field_id, prefix_sep=prefix_str)
+    df = get_consistent_columns_with_UKBMapper(df)
     return df
 
 
